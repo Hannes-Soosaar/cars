@@ -1,8 +1,8 @@
 package models
 
 type Specifications struct {
-	Engine string 
-	Horsepower string 
-	Transmission string
-	Drivetrain string
+	Engine       string `json:"engine"`
+	Horsepower   string `json:"horsepower"`
+	Transmission string `json:"transmission"`
+	Drivetrain   string `json:"drivetrain"`
 }

@@ -1,8 +1,8 @@
 package models
 
 type Manufacturers struct {
-	Id int
-	Name string
-	Country string
-	FoundingYear int
+	Id           int    `json:"id"`
+	Name         string `json:"name"`
+	Country      string `json:"country"`
+	FoundingYear int    `json:"foundingYear"`
 }
