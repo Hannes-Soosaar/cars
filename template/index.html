@@ -10,7 +10,18 @@
     <div>
         Landing page
     </div>
-    <button> To Models</button>
-    <button> To Manufacturer </button>
+    <form  id="models" action = "/models" method="POST" enctype ="multipart/form-data"> 
+    <button type="submit"> to the models cave </button>
+    </form><br>
+    <form  id="manufacturer" action = "/manufacturer" method="POST" enctype ="multipart/form-data"> <br>
+        <button type="submit"> to the manufacturer cave </button>
+    </form>
+</form><br>
+<form  id="manufacturer" action = "/modelsCompare" method="POST" enctype ="multipart/form-data"> <br>
+    <button type="submit"> to the manufacturer cave </button>
+</form>
+<div>{{.AvailableModels}}</div><br>
+<div>{{.AvailableManufacturers}}</div><br>
+<div>{{.AvailableCategories}}</div><br>
 </body>
 </html>

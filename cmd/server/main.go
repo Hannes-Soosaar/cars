@@ -12,6 +12,7 @@ func main() {
 	http.Handle("/../../static/", http.StripPrefix("/../../static/", http.FileServer(http.Dir("static"))))
 	http.HandleFunc("/", handle.LoadIndex)
 	http.HandleFunc("/modelsCompare", handle.LoadCompareModels)
+	http.HandleFunc("/manufacturer", handle.LoadManufacturer)
 	http.HandleFunc("/models", handle.LoadModels)
 	fmt.Printf("Running on Port  :%s\n", conf.PORT)
 	err := http.ListenAndServe(conf.PORT, nil)

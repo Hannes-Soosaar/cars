@@ -2,7 +2,6 @@ package handle
 
 import (
 	"encoding/json"
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -23,15 +22,22 @@ func LoadIndex(w http.ResponseWriter, r *http.Request) {
 		log.Println("Error getting template:", err)
 		return
 	}
-	err = pageHtml.Execute(w, pageHtml)
+	availableModels := GetModels()
+	availableManufacturers := GetManufacturer()
+	availableCategories := GetCategory()
+	data := struct {
+		AvailableModels        []models.CarModel
+		AvailableManufacturers []models.Manufacturer
+		AvailableCategories    []models.Category
+	}{
+		AvailableModels:        availableModels,
+		AvailableManufacturers: availableManufacturers,
+		AvailableCategories:    availableCategories,
+	}
+	err = pageHtml.Execute(w, data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		log.Println("Error executing template:", err)
-		return
 	}
-	go GetModels()
-	go GetManufacturer()
-	go GetCategory()
 }
 
 func LoadModels(w http.ResponseWriter, r *http.Request) {
@@ -45,8 +51,32 @@ func LoadModels(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func LoadCompareModels(w http.ResponseWriter, r *http.Request) {
+func LoadManufacturer(w http.ResponseWriter, r *http.Request) {
+	manufacturers := GetManufacturer()
+	data := struct {
+		ManufacturersInfo []models.Manufacturer
+	}{
+		ManufacturersInfo: manufacturers,
+	}
+	pageHtml, err := template.ParseFiles("../../template/manufacturer.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	err = pageHtml.Execute(w, data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
 
+func LoadCompareModels(w http.ResponseWriter, r *http.Request) {
+	pageHtml, err := template.ParseFiles("../../template/modelscompare.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	err = pageHtml.Execute(w, pageHtml)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 // Retrieves all the models data
@@ -60,10 +90,6 @@ func GetModels() []models.CarModel {
 	if err := json.NewDecoder(response.Body).Decode(&carModels); err != nil {
 		log.Fatal("Error decoding response:", err)
 	}
-	for _, car := range carModels {
-		fmt.Println(car)
-	}
-	//TODO return a error if the car is not found
 	return carModels
 }
 
@@ -77,9 +103,6 @@ func GetManufacturer() []models.Manufacturer {
 	if err := json.NewDecoder(response.Body).Decode(&manufacturers); err != nil {
 		log.Fatal("Error decoding response:", err)
 	}
-	for _, manufacturer := range manufacturers {
-		fmt.Println(manufacturer)
-	}
 	return manufacturers
 }
 
@@ -92,9 +115,6 @@ func GetCategory() []models.Category {
 	var categories []models.Category
 	if err := json.NewDecoder(response.Body).Decode(&categories); err != nil {
 		log.Fatal("Error decoding response:", err)
-	}
-	for _, category := range categories {
-		fmt.Println(category)
 	}
 	return categories
 }
