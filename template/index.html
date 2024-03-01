@@ -20,7 +20,25 @@
 <form  id="manufacturer" action = "/modelsCompare" method="POST" enctype ="multipart/form-data"> <br>
     <button type="submit"> to the manufacturer cave </button>
 </form>
-<div>{{.AvailableModels}}</div><br>
+
+{{range .AvailableModels}}
+<div>
+    <h2>{{.Name}}</h2>
+    <p>Manufacturer: {{.ManufacturerID}}</p>
+    <p>Category: {{.CategoryId}}</p>
+    <p>Year: {{.Year}}</p>
+
+    <h3>Specifications:</h3>
+    <ul>
+        <li>Engine: {{.Specs.Engine}}</li>
+        <li>Horsepower: {{.Specs.Horsepower}}</li>
+        <li>Transmission: {{.Specs.Transmission}}</li>
+        <li>Drivetrain: {{.Specs.Drivetrain}}</li>
+    </ul>
+
+    <img src="http://localhost:3000/api/images/{{.Phot}}" alt="Car Image">
+</div>
+{{end}}
 <div>{{.AvailableManufacturers}}</div><br>
 <div>{{.AvailableCategories}}</div><br>
 </body>
