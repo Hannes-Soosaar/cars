@@ -13,35 +13,32 @@
 </head>
 
 <body>
-
+    
     <ul class="v-menu">
-        <li>
-            <form  id="models" action = "/models" method="POST" enctype ="multipart/form-data"> 
-                <button class="button" type="submit"> to the models cave </button>
-            </form>
-        </li>
-        <li>
-            <form  id="manufacturer" action = "/manufacturer" method="POST" enctype ="multipart/form-data"> 
-                <button class="button" type="submit"> to the manufacturer cave </button>
-            </form>
-        </li>
+        <form id="filterManufacturer" ></form>
+            <select class="button" id="numberDropdown">
+                {{range .AvailableManufacturers}}
+                <option value="{{.Id}}">{{.Name}}</option>
+                {{end}}
+            </select>
+        </form>
+
+        <form id="filterCategroies" >
+            <select class="button" id="numberDropdown">
+                {{range .AvailableCategories}}
+                <option value="{{.Id}}">{{.Name}}</option>
+                {{end}}
+            </select>
+        </form>
         <li>
             <form  id="manufacturer" action = "/modelsCompare" method="POST" enctype ="multipart/form-data"> 
                 <button class="button" type="submit"> to the manufacturer cave </button>
             </form>    
         </li>
-    <select class="button" id="numberDropdown">
-        {{range .AvailableManufacturers}}
-        <option value="{{.Id}}">{{.Name}}</option>
-        {{end}}
-    </select>
-    <select class="button" id="numberDropdown">
-        {{range .AvailableCategories}}
-        <option value="{{.Id}}">{{.Name}}</option>
-        {{end}}
-    </select>
+        <li>
+                <button id="compare" class="button"> Compare Models </button>
+        </li>
     </ul>
-
     <ul class="h-menu">
         <li>
             <form  id="models" action = "/models" method="POST" enctype ="multipart/form-data"> 
@@ -61,6 +58,7 @@
     </ul>
 
     <div class="viewport">
+        <form id="compareFrom">  
             {{range .AvailableModels}}
             <div class="car-container">
                 <h2 class="text-center">{{.Name}}</h2>
@@ -75,12 +73,32 @@
                     <li>Transmission: {{.Specs.Transmission}}</li>
                     <li>Drivetrain: {{.Specs.Drivetrain}}</li>
                 </ul>
-                <img class="thumb-img" src="http://localhost:3000/api/images/{{.Phot}}" alt="Car Image">
+                <img class="thumb-img" src="http://localhost:3000/api/images/{{.Phot}}" alt="Car Image">          
+                <p><input type="checkbox" name="selectedModels" value="{{.Id}}"> Compare </p>
+            
             </div>
             {{end}}
+        </form>
             <div>{{.AvailableManufacturers}}</div><br>
             <div>{{.AvailableCategories}}</div><br> 
     </div>
+
+<script>
+function filterManufacturer(){+
+    event.preventDefault();
+    console.log('You pressed a button')
+}
+
+function handleCompare(event){
+    event.preventDefault();
+    const formData= new FormData(document.getElementById('compareFrom'));
+    const selectedModels = formData.getAll('selectedModels'); 
+    console.log('selected Models:', selectedModels)
+}
+
+document.getElementById('compare').addEventListener('click', handleCompare);
+document.getElementById('manufacturer').addEventListener('submit',filterManufacturer);
+</script>
 
 </body>
 </html>
