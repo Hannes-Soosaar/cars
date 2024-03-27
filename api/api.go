@@ -2,9 +2,11 @@ package api
 
 import (
 	"encoding/json"
-	"gitea.kood.tech/hannessoosaar/cars/pkg/models"
+	"fmt"
 	"log"
 	"net/http"
+
+	"gitea.kood.tech/hannessoosaar/cars/pkg/models"
 )
 
 // Retrieves all the models data
@@ -19,6 +21,54 @@ func GetModels() []models.CarModel {
 		log.Fatal("Error decoding response:", err)
 	}
 	return carModels
+}
+
+
+
+func GetModelBy(Id string) models.CarModel{
+	fmt.Println("http://localhost:3000/api/models/"+Id)
+	response, err := http.Get("http://localhost:3000/api/models/"+Id)
+	if 	err != nil {
+		log.Fatal("Error fetching data:", err )
+	}
+	defer response.Body.Close()
+	var car models.CarModel 
+	if err := json.NewDecoder(response.Body).Decode(&car); err != nil {
+		log.Fatal("Error decoding response:", err)
+	}
+	return car
+}
+
+func GetModelFilterBy(manufactureID string, categoryId string) (cars []models.CarModel) {
+
+	return cars
+}
+
+func GetManufacturerBy(Id string) models.Manufacturer{
+	fmt.Println("http://localhost:3000/api/manufacturers/"+Id)
+	response, err := http.Get("http://localhost:3000/api/manufacturers/"+Id)
+	if 	err != nil {
+		log.Fatal("Error fetching data:", err )
+	}
+	defer response.Body.Close()
+	var manufacturer models.Manufacturer 
+	if err := json.NewDecoder(response.Body).Decode(&manufacturer); err != nil {
+		log.Fatal("Error decoding response:", err)
+	}
+	return manufacturer
+}
+func GetCategoryBy(Id string) models.Category{
+	fmt.Println("http://localhost:3000/api/categories/"+Id)
+	response, err := http.Get("http://localhost:3000/api/categories/"+Id)
+	if 	err != nil {
+		log.Fatal("Error fetching data:", err )
+	}
+	defer response.Body.Close()
+	var category models.Category 
+	if err := json.NewDecoder(response.Body).Decode(&category); err != nil {
+		log.Fatal("Error decoding response:", err)
+	}
+	return category
 }
 
 func GetManufacturer() []models.Manufacturer {
@@ -46,7 +96,3 @@ func GetCategory() []models.Category {
 	}
 	return categories
 }
-
-//TODO:Get models by id
-//TODO:Get category by id
-//TODO:Get Manufacturer by id

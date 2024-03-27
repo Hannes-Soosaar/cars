@@ -45,7 +45,15 @@ color: white;
 .v-menu li button{
     display: block;
     padding: 5px;
-    margin: 10px;
+    margin: 0px;
+    text-decoration: none;
+}
+
+.v-menu li select{
+
+    display: block;
+    padding: 5px;
+    margin: 20px;
     text-decoration: none;
 }
 
@@ -54,3 +62,5 @@ color: white;
     color: white;
     background-color: black;
 }
+
+

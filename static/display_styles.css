@@ -1,16 +1,17 @@
-.car-container{
-width: 300px;
-margin: 20px;
-padding: 20px;
-background-color: #fff;
-border: 1px solid gold ;
-justify-content: center;
+.car-container {
+	width: calc(33.33% - 20 px);
+	margin: 20px;
+	padding: 20px;
+	background-color: #fff;
+	border: 1px solid gold;
+	justify-content: center;
 }
 .viewport {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content:left;
-    margin-left: 220px;
-    margin-top: 100px;
-    padding: 30px;
+    width: auto;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	margin-left: 220px;
+	margin-top: 100px;
+	padding: 30px;
 }

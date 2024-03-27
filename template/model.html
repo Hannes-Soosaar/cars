@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="/static/style.css" />
+		<title>Cars</title>
+	</head>
+	<body>
+		<div class="car-container">
+			<h2 class="text-center">{{.CarModel.Year}} {{.CarModel.Name}}</h2>
+
+			<p class="text-center"></p>
+			<p>Category: {{.CarCategory.Name}}</p>
+			<h3 class="text-center">Manufacturer</h3>
+			<p>{{.CarManufacturer.Name}}</p>
+			<p>HQ location: {{.CarManufacturer.Country}}</p>
+			<p>Founded: {{.CarManufacturer.FoundingYear}}</p>
+			<div class="text-center">
+				<h3>Specifications:</h3>
+				<ul class="text-center">
+					<p>released {{.CarModel.Year}}</p>
+					<li>Engine: {{.CarModel.Specs.Engine}}</li>
+					<li>Horsepower: {{.CarModel.Specs.Horsepower}}</li>
+					<li>Transmission: {{.CarModel.Specs.Transmission}}</li>
+					<li>Drivetrain: {{.CarModel.Specs.Drivetrain}}</li>
+				</ul>
+			</div>
+			<img
+				class="thumb-img"
+				src="http://localhost:3000/api/images/{{.CarModel.Phot}}"
+				alt="Car Image"
+			/>
+
+			<form
+				class="text-center"
+				id="home"
+				action="/"
+				method="POST"
+				enctype="multipart/form-data"
+			>
+				<button type="submit">home</button>
+			</form>
+		</div>
+	</body>
+</html>

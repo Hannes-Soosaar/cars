@@ -15,8 +15,8 @@
 <body>
     
     <ul class="v-menu">
-        <form id="filterManufacturer" ></form>
-            <select class="button" id="numberDropdown">
+        <form  id="filterManufacturer" ></form>
+            <select class="select button" id="selectedManufacturerId">
                 {{range .AvailableManufacturers}}
                 <option value="{{.Id}}">{{.Name}}</option>
                 {{end}}
@@ -24,69 +24,45 @@
         </form>
 
         <form id="filterCategroies" >
-            <select class="button" id="numberDropdown">
+            <select class="select button" id="selectedCategoryId">
                 {{range .AvailableCategories}}
                 <option value="{{.Id}}">{{.Name}}</option>
                 {{end}}
             </select>
+            <button id="manufacturer" class="button" type="submit"> Filter </button>
         </form>
         <li>
-            <form  id="manufacturer" action = "/modelsCompare" method="POST" enctype ="multipart/form-data"> 
-                <button class="button" type="submit"> to the manufacturer cave </button>
-            </form>    
-        </li>
-        <li>
-                <button id="compare" class="button"> Compare Models </button>
-        </li>
-    </ul>
-    <ul class="h-menu">
-        <li>
-            <form  id="models" action = "/models" method="POST" enctype ="multipart/form-data"> 
-                <button class="button" type="submit"> to the models cave </button>
-            </form>
-        </li>
-        <li>
-            <form  id="manufacturer" action = "/manufacturer" method="POST" enctype ="multipart/form-data">
-                <button class="button" type="submit"> to the manufacturer cave </button>
-            </form>
-        </li>
-        <li>
-            <form  id="manufacturer" action = "/modelsCompare" method="POST" enctype ="multipart/form-data">
-                <button class="button" type="submit"> to the manufacturer cave </button>
-            </form>    
+            <button id="compare" class="button"> Compare Models </button>
         </li>
     </ul>
 
-    <div class="viewport">
-        <form id="compareFrom">  
+    <div class="h-menu">
+    <h2 class=" text-center">Cars website</h2>
+    </div>
+
+    <div>
+        <form class="viewport" id="compareFrom">  
             {{range .AvailableModels}}
             <div class="car-container">
-                <h2 class="text-center">{{.Name}}</h2>
-                <p>Manufacturer: {{.ManufacturerID}}</p>
-                <p>Category: {{.CategoryId}}</p>
-                <p class="text-center"> {{.Year}}</p>     
-                <h3>Specifications:</h3>
+                <h2 class="text-center">{{.Year}} {{.Name}}</h2>
+                <div></div>
+                <p class="text-center"> </p>     
                 <ul>
-                    <p class="text-left">released {{.Year}}</p>   
-                    <li>Engine: {{.Specs.Engine}}</li>
-                    <li>Horsepower: {{.Specs.Horsepower}}</li>
-                    <li>Transmission: {{.Specs.Transmission}}</li>
-                    <li>Drivetrain: {{.Specs.Drivetrain}}</li>
                 </ul>
-                <img class="thumb-img" src="http://localhost:3000/api/images/{{.Phot}}" alt="Car Image">          
+                <a href="/model?modelID={{.Id}}">
+                    <img class="thumb-img" src="http://localhost:3000/api/images/{{.Phot}}" alt="Car Image">          
+                </a>
+                <button class=" button text-center" onclick="viewDetails({{.Id}})">View details</button>
                 <p><input type="checkbox" name="selectedModels" value="{{.Id}}"> Compare </p>
             
             </div>
             {{end}}
         </form>
-            <div>{{.AvailableManufacturers}}</div><br>
-            <div>{{.AvailableCategories}}</div><br> 
     </div>
 
 <script>
-function filterManufacturer(){+
-    event.preventDefault();
-    console.log('You pressed a button')
+function filterManufacturer(event){
+    console.log(event)
 }
 
 function handleCompare(event){
@@ -96,8 +72,16 @@ function handleCompare(event){
     console.log('selected Models:', selectedModels)
 }
 
-document.getElementById('compare').addEventListener('click', handleCompare);
-document.getElementById('manufacturer').addEventListener('submit',filterManufacturer);
+function viewDetails(modelId){
+    event.preventDefault()
+    window.location.assign("/model?modelID="+modelId)
+}
+
+document.getElementById('compare').addEventListener('click', function(event){
+    handleCompare(event);});
+document.getElementById('manufacturer').addEventListener('submit',function(event){
+    filterManufacturer(event);
+});
 </script>
 
 </body>
