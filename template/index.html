@@ -13,29 +13,28 @@
 </head>
 
 <body>
-    
     <ul class="v-menu">
-        <form  id="filterManufacturer" ></form>
-            <select class="select button" id="selectedManufacturerId">
+        <form  id="filterForm" action="/filter" method = "post">
+            <label for="selectedManufacturerId">Select a manufacturer</label>
+            <select name="selectedManufacturerId"  class="select button" id="selectedManufacturerId">
+                <option value="">Select Manufacturer</option> 
                 {{range .AvailableManufacturers}}
                 <option value="{{.Id}}">{{.Name}}</option>
                 {{end}}
             </select>
-        </form>
-
-        <form id="filterCategroies" >
-            <select class="select button" id="selectedCategoryId">
+            <label for="selectedCategoryId">Select a category</label>
+            <select name="selectedCategoryId" class="select button" id="selectedCategoryId">
+                <option value="">Select Manufacturer</option> 
                 {{range .AvailableCategories}}
                 <option value="{{.Id}}">{{.Name}}</option>
                 {{end}}
             </select>
-            <button id="manufacturer" class="button" type="submit"> Filter </button>
+            <button id="filterButton" class="select button" type="submit"> Filter </button>
         </form>
         <li>
-            <button id="compare" class="button"> Compare Models </button>
+            <button id="compare" class=" select button"> Compare Models </button>
         </li>
     </ul>
-
     <div class="h-menu">
     <h2 class=" text-center">Cars website</h2>
     </div>
@@ -61,27 +60,27 @@
     </div>
 
 <script>
-function filterManufacturer(event){
-    console.log(event)
-}
+// function filterManufacturer(event){
+//     console.log(event)
+// }
 
-function handleCompare(event){
-    event.preventDefault();
-    const formData= new FormData(document.getElementById('compareFrom'));
-    const selectedModels = formData.getAll('selectedModels'); 
-    console.log('selected Models:', selectedModels)
-}
+// function handleCompare(event){
+//     event.preventDefault();
+//     const formData= new FormData(document.getElementById('compareFrom'));
+//     const selectedModels = formData.getAll('selectedModels'); 
+//     console.log('selected Models:', selectedModels)
+// }
 
 function viewDetails(modelId){
     event.preventDefault()
     window.location.assign("/model?modelID="+modelId)
 }
 
-document.getElementById('compare').addEventListener('click', function(event){
-    handleCompare(event);});
-document.getElementById('manufacturer').addEventListener('submit',function(event){
-    filterManufacturer(event);
-});
+// document.getElementById('compare').addEventListener('click', function(event){
+//     handleCompare(event);});
+// document.getElementById('manufacturer').addEventListener('submit',function(event){
+//     filterManufacturer(event);
+// });
 </script>
 
 </body>
