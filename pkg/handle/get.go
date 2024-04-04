@@ -69,16 +69,48 @@ func LoadManufacturer(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoadCompareModels(w http.ResponseWriter, r *http.Request) {
-	pageHtml, err := template.ParseFiles("../../template/modelscompare.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-	err = pageHtml.Execute(w, pageHtml)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+
+	fmt.Println("LoadComp function called.")
+
+	var cars []models.CarModel
+
+	if r.Method == http.MethodPost {
+		err := r.ParseForm()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		fmt.Println("Form submitted via POST method")
+		selectedModelsId := r.Form["selectedModels"]
+
+		allCars := api.GetModels()
+
+		for _, car := range allCars {
+			for i := 0; i < len(selectedModelsId); i++ {
+				if strconv.Itoa(car.Id) == selectedModelsId[i] {
+					cars = append(cars, car)
+					fmt.Println("Adding Car")
+				}
+			}
+		}
+
+		data := struct {
+			CarModel []models.CarModel
+		}{
+			CarModel: cars,
+		}
+		pageHtml, err := template.ParseFiles("../../template/modelscompare.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		err = pageHtml.Execute(w, data)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 	}
 }
 
+// TODO this could be handled differently... the GO way.
 func LoadModel(w http.ResponseWriter, r *http.Request) {
 	modeID := r.URL.Query().Get("modelID")
 	carModel := api.GetModelBy(modeID)
@@ -109,8 +141,6 @@ func LoadModel(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoadFilter(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("LoadFilter function called.")
-	log.Println("LoadFilter function called.")
 	pageHtml, err := template.ParseFiles("../../template/index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

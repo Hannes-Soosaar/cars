@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <div> Model Compare</div>
-    <form  id="home" action = "/" method="POST" enctype ="multipart/form-data"> 
-        <button type="submit"> home </button>
-    </form><br>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div>Model Compare</div>
+        {{range.CarModel}}
+		<p>{{.Year}} {{.Name}}</p>
+		<form id="home" action="/" method="POST" enctype="multipart/form-data">
+			<button type="submit">home</button>
+		</form>
+        {{end}}
+		<br />
+	</body>
 </html>

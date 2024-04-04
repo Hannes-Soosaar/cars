@@ -13,7 +13,7 @@ func main() {
 	fs := http.FileServer(http.Dir("../../static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.HandleFunc("/", handle.LoadIndex)
-	http.HandleFunc("/modelsCompare", handle.LoadCompareModels)
+	http.HandleFunc("/modelscompare", handle.LoadCompareModels)
 	http.HandleFunc("/manufacturer", handle.LoadManufacturer)
 	http.HandleFunc("/models", handle.LoadModels)
 	http.HandleFunc("/model", handle.LoadModel)

@@ -1,87 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" href="/static/images/" type="image/png" />
+		<link rel="shortcut icon" href="/static/16_16_car.png" type="image/png" />
+		<link rel="stylesheet" href="/static/style.css" />
+		<link rel="stylesheet" href="/static/menu_styles.css" />
+		<link rel="stylesheet" href="/static/display_styles.css" />
+		<title>Cars</title>
+	</head>
 
-<head>
-<meta charset="UTF-8">
-<meta name = "viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="/static/images/" type="image/png">
-<link rel="shortcut icon" href="/static/16_16_car.png" type="image/png">
-<link rel="stylesheet" href="/static/style.css">
-<link rel="stylesheet" href="/static/menu_styles.css">
-<link rel="stylesheet" href="/static/display_styles.css">
-<title>Cars</title>
-</head>
-
-<body>
-    <ul class="v-menu">
-        <form  id="filterForm" action="/filter" method = "post">
-            <label for="selectedManufacturerId">Select a manufacturer</label>
-            <select name="selectedManufacturerId"  class="select button" id="selectedManufacturerId">
-                <option value="">Select Manufacturer</option> 
-                {{range .AvailableManufacturers}}
-                <option value="{{.Id}}">{{.Name}}</option>
-                {{end}}
-            </select>
-            <label for="selectedCategoryId">Select a category</label>
-            <select name="selectedCategoryId" class="select button" id="selectedCategoryId">
-                <option value="">Select Manufacturer</option> 
-                {{range .AvailableCategories}}
-                <option value="{{.Id}}">{{.Name}}</option>
-                {{end}}
-            </select>
-            <button id="filterButton" class="select button" type="submit"> Filter </button>
-        </form>
-        <li>
-            <button id="compare" class=" select button"> Compare Models </button>
-        </li>
-    </ul>
-    <div class="h-menu">
-    <h2 class=" text-center">Cars website</h2>
-    </div>
-
-    <div>
-        <form class="viewport" id="compareFrom">  
-            {{range .AvailableModels}}
-            <div class="car-container">
-                <h2 class="text-center">{{.Year}} {{.Name}}</h2>
-                <div></div>
-                <p class="text-center"> </p>     
-                <ul>
-                </ul>
-                <a href="/model?modelID={{.Id}}">
-                    <img class="thumb-img" src="http://localhost:3000/api/images/{{.Phot}}" alt="Car Image">          
-                </a>
-                <button class=" button text-center" onclick="viewDetails({{.Id}})">View details</button>
-                <p><input type="checkbox" name="selectedModels" value="{{.Id}}"> Compare </p>
-            
-            </div>
-            {{end}}
-        </form>
-    </div>
-
-<script>
-// function filterManufacturer(event){
-//     console.log(event)
-// }
-
-// function handleCompare(event){
-//     event.preventDefault();
-//     const formData= new FormData(document.getElementById('compareFrom'));
-//     const selectedModels = formData.getAll('selectedModels'); 
-//     console.log('selected Models:', selectedModels)
-// }
-
-function viewDetails(modelId){
-    event.preventDefault()
-    window.location.assign("/model?modelID="+modelId)
-}
-
-// document.getElementById('compare').addEventListener('click', function(event){
-//     handleCompare(event);});
-// document.getElementById('manufacturer').addEventListener('submit',function(event){
-//     filterManufacturer(event);
-// });
-</script>
-
-</body>
+	<body>
+		<ul class="v-menu">
+			<h1 class="text-center">Cars Page</h1>
+			<hr />
+			<form id="filterForm" action="/filter" method="POST">
+				<label class="label" for="selectedManufacturerId"
+					> Filter cars by manufacturer</label
+				>
+				<select
+					name="selectedManufacturerId"
+					class="select button"
+					id="selectedManufacturerId"
+				>
+					<option value="">select manufacturer</option>
+					<option value="">show all manufacturer</option>
+					{{range .AvailableManufacturers}}
+					<option value="{{.Id}}">{{.Name}}</option>
+					{{end}}
+				</select>
+				<div class="menu-container">
+					<button id="filterButton" class="select button" type="submit">
+						Filter
+					</button>
+				</div>
+				<hr />
+				<label class="label" for="selectedCategoryId"
+					>Filter cars by category</label
+				>
+				<select
+					name="selectedCategoryId"
+					class="select button"
+					id="selectedCategoryId"
+				>
+					<option value="">select category</option>
+					<option value="">show all categories</option>
+					{{range .AvailableCategories}}
+					<option value="{{.Id}}">{{.Name}}</option>
+					{{end}}
+				</select>
+				<div class="menu-container">
+					<button id="filterButton" class="select button" type="submit">
+						Filter
+					</button>
+				</div>
+			</form>
+		</ul>
+		<div>
+			<form id="compareFrom" action="/modelscompare" method="POST">
+				<div class="viewport">
+					{{range .AvailableModels}}
+					<div class="car-container">
+						<div class="heading-container">
+							<h2 class="wrap-text">{{.Name}} - {{.Year}}</h2>
+						</div>
+						<hr />
+						<div class="image-container">
+							<a href="/model?modelID={{.Id}}" method="POST">
+								<img
+									class="thumb-img"
+									src="http://localhost:3000/api/images/{{.Phot}}"
+									alt="Car Image"
+								/>
+							</a>
+						</div>
+						<div class="centered-container">
+							<button class="button" onclick="viewDetails({{.Id}})">
+								model details
+							</button>
+						</div>
+						<hr />
+						<p class="text-body">
+							add model to compare list to compare with others
+						</p>
+						<div class="compare-container">
+							<input
+								class="checkbox-input"
+								type="checkbox"
+								name="selectedModels"
+								id="selectedModels"
+								value="{{.Id}}"
+							/>
+							<button id="compare" class="button-compare" type="submit">
+								compare models
+							</button>
+						</div>
+					</div>
+					{{end}}
+				</div>
+			</form>
+		</div>
+		<script>
+			function viewDetails(modelId) {
+				event.preventDefault();
+				window.location.assign("/model?modelID=" + modelId);
+			}
+		</script>
+	</body>
 </html>

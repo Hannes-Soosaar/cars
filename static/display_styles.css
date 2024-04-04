@@ -1,17 +1,21 @@
 .car-container {
-	width: calc(33.33% - 20 px);
+	/* width: calc(33.33% - 20 px); */
+	width: 300 px;
 	margin: 20px;
 	padding: 20px;
 	background-color: #fff;
 	border: 1px solid gold;
+	overflow: hidden;
+	word-wrap: break-word;
 	justify-content: center;
 }
 .viewport {
-    width: auto;
+	width: 300;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: flex-start;
 	margin-left: 220px;
-	margin-top: 100px;
+	margin-top: 5px;
 	padding: 30px;
+	padding-top: 5px;
 }

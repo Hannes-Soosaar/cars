@@ -1,66 +1,47 @@
-.h-menu{
-    list-style-type: none;
-    margin-top: 0px;
-    margin: 10;
-    padding: 0px;
-    padding-left: 250px;
-    background-color: #E6E6E6;
-    left:0;
-    top: 0;
-    position:fixed;
-    overflow-y:auto;
-}
-.h-menu li{
-    float: left;
-}
-.h-menu li button{
-    display: block;
-    padding: 5px;
-    margin: 10px;
-    text-decoration: none;
+.v-menu {
+	position: relative;
+	list-style-type: none;
+	margin: 0;
+	border: 1px;
+	border-color: black;
+	border-radius: 5px;
+	padding-top: 0px;
+	padding-left: 0;
+	margin: 10px;
+	width: 200px;
+	position: fixed;
+	left: 0;
+	top: 0;
+	height: 100%;
+	overflow-y: auto;
 }
 
-.h-menu li button:hover{
-background-color: black;
-color: white;
+.v-menu li button {
+	display: block;
+	padding: 5px;
+	margin: 0px;
+	text-decoration: none;
 }
 
-.v-menu{
-    list-style-type: none;
-    margin: 0;
-    border: 1px;
-    border-color: black;
-    border-radius: 5px;
-    padding-top: 50px;
-    padding-left: 0;
-    margin: 10px;
-    width: 200px;
-    position: fixed;
-    left:0;
-    top: 0;
-    height: 100%;
-    overflow-y: auto; 
+.v-menu li select {
+	display: block;
+	padding: 5px;
+	margin: 20px;
+	text-decoration: none;
 }
 
-.v-menu li button{
-    display: block;
-    padding: 5px;
-    margin: 0px;
-    text-decoration: none;
+.v-menu li button:hover {
+	display: block;
+	color: white;
+	background-color: black;
 }
-
-.v-menu li select{
-
-    display: block;
-    padding: 5px;
-    margin: 20px;
-    text-decoration: none;
+.menu-container {
+	width: 200px;
+	height: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 0px;
+	margin-top: 0px;
+	padding: 0px;
 }
-
-.v-menu li button:hover{
-    display: block;
-    color: white;
-    background-color: black;
-}
-
-
