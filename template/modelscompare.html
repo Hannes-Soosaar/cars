@@ -3,16 +3,44 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Document</title>
+		<link rel="icon" href="/static/images/16_16_car.png" type="image/png" />
+		<link rel="stylesheet" href="/static/style.css" />
+		<link rel="stylesheet" href="/static/menu_styles.css" />
+		<link rel="stylesheet" href="/static/display_styles.css" />
+		<title>Cars</title>
 	</head>
+
 	<body>
-		<div>Model Compare</div>
-        {{range.CarModel}}
-		<p>{{.Year}} {{.Name}}</p>
-		<form id="home" action="/" method="POST" enctype="multipart/form-data">
-			<button type="submit">home</button>
-		</form>
-        {{end}}
-		<br />
+		<div class="sub-menu-container-model">
+			<h3>Model Comparison</h3>
+		</div>
+		<div class="viewport-compare">
+			{{range.CarModel}}
+			<div class="car-container">
+				<!-- <h2 class="text-center">{{.Name}}</h2> -->
+				<div class="image-container">
+					<img
+						class="thumb-img"
+						src="http://localhost:3000/api/images/{{.Phot}}"
+						alt="Car Image"
+					/>
+				</div>
+				<h3 class="text-center">{{.Name}}, Released {{.Year}}</h3>
+				<hr />
+				<div>
+					<h3 class="text-center">Specifications</h3>
+					<p>Engine: {{.Specs.Engine}}</p>
+					<p>Horsepower: {{.Specs.Horsepower}}</p>
+					<p>Transmission: {{.Specs.Transmission}}</p>
+					<p>Drivetrain: {{.Specs.Drivetrain}}</p>
+				</div>
+			</div>
+			{{end}}
+		</div>
+		<div class="sub-menu-container-model">
+			<form id="home" action="/" method="POST" enctype="multipart/form-data">
+				<button type="submit">Back</button>
+			</form>
+		</div>
 	</body>
 </html>

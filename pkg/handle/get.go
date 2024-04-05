@@ -110,7 +110,6 @@ func LoadCompareModels(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// TODO this could be handled differently... the GO way.
 func LoadModel(w http.ResponseWriter, r *http.Request) {
 	modeID := r.URL.Query().Get("modelID")
 	carModel := api.GetModelBy(modeID)

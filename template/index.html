@@ -3,8 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" href="/static/images/" type="image/png" />
-		<link rel="shortcut icon" href="/static/16_16_car.png" type="image/png" />
+		<link rel="icon" href="/static/images/16_16_car.png" type="image/png" />
 		<link rel="stylesheet" href="/static/style.css" />
 		<link rel="stylesheet" href="/static/menu_styles.css" />
 		<link rel="stylesheet" href="/static/display_styles.css" />
@@ -13,11 +12,11 @@
 
 	<body>
 		<ul class="v-menu">
-			<h1 class="text-center">Cars Page</h1>
+			<h1 class="text-center">Simple Cars</h1>
 			<hr />
 			<form id="filterForm" action="/filter" method="POST">
-				<label class="label" for="selectedManufacturerId"
-					> Filter cars by manufacturer</label
+				<label class="label" for="selectedManufacturerId">
+					Filter cars by manufacturer</label
 				>
 				<select
 					name="selectedManufacturerId"
@@ -36,7 +35,7 @@
 					</button>
 				</div>
 				<hr />
-				<label class="label" for="selectedCategoryId"
+				<label class="label-style" for="selectedCategoryId"
 					>Filter cars by category</label
 				>
 				<select
@@ -77,13 +76,11 @@
 						</div>
 						<div class="centered-container">
 							<button class="button" onclick="viewDetails({{.Id}})">
-								model details
+								Details
 							</button>
 						</div>
 						<hr />
-						<p class="text-body">
-							add model to compare list to compare with others
-						</p>
+						<p class="text-body">Tick box to add model to compare list</p>
 						<div class="compare-container">
 							<input
 								class="checkbox-input"
@@ -93,7 +90,7 @@
 								value="{{.Id}}"
 							/>
 							<button id="compare" class="button-compare" type="submit">
-								compare models
+								Compare ticked models
 							</button>
 						</div>
 					</div>
