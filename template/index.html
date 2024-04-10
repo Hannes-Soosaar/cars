@@ -13,7 +13,6 @@
 	<body>
 		<ul class="v-menu">
 			<h1 class="text-center">Simple Cars</h1>
-			<hr />
 			<form id="filterForm" action="/filter" method="POST">
 				<label class="label" for="selectedManufacturerId">
 					Filter cars by manufacturer</label
@@ -49,25 +48,38 @@
 					<option value="{{.Id}}">{{.Name}}</option>
 					{{end}}
 				</select>
+				<div class="menu-container">
+					<button id="filterButton" class="select button" type="submit">
+						Filter
+					</button>
+				</div>
 			</form>
-
-			<form id="filterForm" action="/filterTransmission" method="POST">
-				<label class="label" for="selectedManufacturerId">
-					Filter cars by manufacturer</label
+			<hr />
+			<form
+				id="filterTransmissionForm"
+				action="/filterTransmission"
+				method="POST"
+			>
+				<label class="label" for="selectedTransmissionValue">
+					Filter cars by transmission</label
 				>
 				<select
-					name="selectedManufacturerId"
+					name="selectedTransmissionValue"
 					class="select button"
-					id="selectedManufacturerId"
+					id="selectedTransmissionValue"
 				>
 					<option value="">select transmission</option>
-					<option value="">show all Transmission</option>
+					<option value="">show all transmission</option>
 					{{ range $key, $value := .AvailableTransmissions }}
-					<option value="{{ $key }}">{{ $value }}</option>
+					<option value="{{ $value }}">{{ $value }}</option>
 					{{ end }}
 				</select>
 				<div class="menu-container">
-					<button id="filterButton" class="select button" type="submit">
+					<button
+						id="filterTransmissionButton"
+						class="select button"
+						type="submit"
+					>
 						Filter
 					</button>
 				</div>

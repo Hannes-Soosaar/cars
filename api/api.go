@@ -10,7 +10,6 @@ import (
 	"gitea.kood.tech/hannessoosaar/cars/pkg/models"
 )
 
-// Retrieves all the models data
 func GetModels() []models.CarModel {
 	response, err := http.Get("http://localhost:3000/api/models")
 	if err != nil {
@@ -25,7 +24,6 @@ func GetModels() []models.CarModel {
 }
 
 func GetModelBy(Id string) models.CarModel {
-	fmt.Println("http://localhost:3000/api/models/" + Id)
 	response, err := http.Get("http://localhost:3000/api/models/" + Id)
 	if err != nil {
 		log.Fatal("Error fetching data:", err)
@@ -38,23 +36,17 @@ func GetModelBy(Id string) models.CarModel {
 	return car
 }
 
-// TODO this method feels out of place see if there is a better place for it.
 func FilterModelBy(manufactureId string, categoryId string) (cars []models.CarModel) {
-
 	allCars := GetModels()
-
 	var findByManufacture bool
 	var findByCategory bool
 	if len(manufactureId) > 0 {
 		findByManufacture = true
-		fmt.Printf("find by Manuf.")
 	}
 	if len(categoryId) > 0 {
 		findByCategory = true
-		fmt.Printf("find by Cat.")
 	}
 	if !findByManufacture && !findByCategory {
-		fmt.Printf("returning all cars")
 		return allCars
 	}
 	for _, car := range allCars {
@@ -63,23 +55,31 @@ func FilterModelBy(manufactureId string, categoryId string) (cars []models.CarMo
 		fmt.Println(car.Name)
 		if strconv.Itoa(car.CategoryId) == categoryId && findByCategory {
 			categoryMatch = true
-			fmt.Printf("cat. match ")
 		}
 		if strconv.Itoa(car.ManufacturerID) == manufactureId && findByManufacture {
 			manufacturerMatch = true
-			fmt.Printf("manuf. match ")
 		}
-		//TODO there is a bug here. when filtering by a manuf and category you will get all of that type and the model
 		if categoryMatch || manufacturerMatch {
 			cars = append(cars, car)
-			fmt.Printf("adding car")
+		}
+	}
+	return cars
+}
+
+func FilterModelByTransmission(transmission string) (cars []models.CarModel) {
+	allCars := GetModels()
+	if transmission == "" {
+		return allCars
+	}
+	for _, car := range allCars {
+		if car.Specs.Transmission == transmission {
+			cars = append(cars, car)
 		}
 	}
 	return cars
 }
 
 func GetManufacturerBy(Id string) models.Manufacturer {
-	fmt.Println("http://localhost:3000/api/manufacturers/" + Id)
 	response, err := http.Get("http://localhost:3000/api/manufacturers/" + Id)
 	if err != nil {
 		log.Fatal("Error fetching data:", err)
@@ -92,7 +92,6 @@ func GetManufacturerBy(Id string) models.Manufacturer {
 	return manufacturer
 }
 func GetCategoryBy(Id string) models.Category {
-	fmt.Println("http://localhost:3000/api/categories/" + Id)
 	response, err := http.Get("http://localhost:3000/api/categories/" + Id)
 	if err != nil {
 		log.Fatal("Error fetching data:", err)

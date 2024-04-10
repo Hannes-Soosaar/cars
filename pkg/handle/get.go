@@ -22,13 +22,11 @@ func LoadIndex(w http.ResponseWriter, r *http.Request) {
 	availableManufacturers := api.GetManufacturer()
 	availableCategories := api.GetCategory()
 	availableTransmissionsMap := make(map[string]string)
-
 	for _, model := range availableModels {
 		if _, ok := availableTransmissionsMap[model.Specs.Transmission]; !ok {
 			availableTransmissionsMap[model.Specs.Transmission] = model.Specs.Transmission
 		}
 	}
-
 	data := struct {
 		AvailableModels        []models.CarModel
 		AvailableManufacturers []models.Manufacturer
@@ -44,10 +42,6 @@ func LoadIndex(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-}
-
-func GetManufacturer() {
-	panic("unimplemented")
 }
 
 func LoadModels(w http.ResponseWriter, r *http.Request) {
@@ -79,11 +73,7 @@ func LoadManufacturer(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoadCompareModels(w http.ResponseWriter, r *http.Request) {
-
-	fmt.Println("LoadComp function called.")
-
 	var cars []models.CarModel
-
 	if r.Method == http.MethodPost {
 		err := r.ParseForm()
 		if err != nil {
@@ -92,9 +82,7 @@ func LoadCompareModels(w http.ResponseWriter, r *http.Request) {
 		}
 		fmt.Println("Form submitted via POST method")
 		selectedModelsId := r.Form["selectedModels"]
-
 		allCars := api.GetModels()
-
 		for _, car := range allCars {
 			for i := 0; i < len(selectedModelsId); i++ {
 				if strconv.Itoa(car.Id) == selectedModelsId[i] {
@@ -103,7 +91,6 @@ func LoadCompareModels(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		}
-
 		data := struct {
 			CarModel []models.CarModel
 		}{
@@ -126,7 +113,6 @@ func LoadModel(w http.ResponseWriter, r *http.Request) {
 	carManufacturer := api.GetManufacturerBy(strconv.Itoa(carModel.ManufacturerID))
 	carCategory := api.GetCategoryBy(strconv.Itoa(carModel.CategoryId))
 	fmt.Println(modeID)
-
 	data := struct {
 		CarModel        models.CarModel
 		CarManufacturer models.Manufacturer
@@ -146,10 +132,10 @@ func LoadModel(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-
 }
 
 func LoadFilter(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Filter handler started")
 	pageHtml, err := template.ParseFiles("../../template/index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -163,25 +149,72 @@ func LoadFilter(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-
-		fmt.Println("Form submitted via POST method")
-		log.Println("Form submitted via POST method.")
 		manufactureId := r.FormValue("selectedManufacturerId")
 		categoryId := r.FormValue("selectedCategoryId")
 		cars = api.FilterModelBy(manufactureId, categoryId)
 	}
-
 	availableManufacturers := api.GetManufacturer()
 	availableCategories := api.GetCategory()
-	//TODO add a map that keeps track of transmission counts.
+	allModels := api.GetModels()
+	availableTransmissionsMap := make(map[string]string)
+	for _, model := range allModels {
+		if _, ok := availableTransmissionsMap[model.Specs.Transmission]; !ok {
+			availableTransmissionsMap[model.Specs.Transmission] = model.Specs.Transmission
+		}
+	}
 	data := struct {
 		AvailableModels        []models.CarModel
 		AvailableManufacturers []models.Manufacturer
 		AvailableCategories    []models.Category
+		AvailableTransmissions map[string]string
 	}{
 		AvailableModels:        cars,
 		AvailableManufacturers: availableManufacturers,
 		AvailableCategories:    availableCategories,
+		AvailableTransmissions: availableTransmissionsMap,
+	}
+	err = pageHtml.Execute(w, data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func LoadTransmissionFilter(w http.ResponseWriter, r *http.Request) {
+	pageHtml, err := template.ParseFiles("../../template/index.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Println("Error getting template:", err)
+		return
+	}
+	var cars []models.CarModel
+	if r.Method == http.MethodPost {
+		err := r.ParseForm()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		transmission := r.FormValue("selectedTransmissionValue")
+		cars = api.FilterModelByTransmission(transmission)
+	}
+	availableManufacturers := api.GetManufacturer()
+	availableCategories := api.GetCategory()
+	allModels := api.GetModels()
+	availableTransmissionsMap := make(map[string]string)
+	for _, model := range allModels {
+		if _, ok := availableTransmissionsMap[model.Specs.Transmission]; !ok {
+			availableTransmissionsMap[model.Specs.Transmission] = model.Specs.Transmission
+		}
+	}
+	data := struct {
+		AvailableModels        []models.CarModel
+		AvailableManufacturers []models.Manufacturer
+		AvailableCategories    []models.Category
+		AvailableTransmissions map[string]string
+	}{
+		AvailableModels:        cars,
+		AvailableManufacturers: availableManufacturers,
+		AvailableCategories:    availableCategories,
+		AvailableTransmissions: availableTransmissionsMap,
 	}
 	err = pageHtml.Execute(w, data)
 	if err != nil {
