@@ -41,16 +41,29 @@
 						</div>
 					</div>
 				</div>
-				<form
-					class="text-center margin10"
-					id="home"
-					action="/"
-					method="POST"
-					enctype="multipart/form-data"
-				>
-					<button type="submit button margin10">Back</button>
-				</form>
+
+				<div class="center">
+					<form
+						class="text-center margin10"
+						id="home"
+						action="/"
+						method="POST"
+						enctype="multipart/form-data"
+					>
+						<button type="submit button margin10">Back</button>
+					</form>
+					<hr/>
+					<div class="text-center">
+					<button type="button" class="text-center" onclick="printPage()">Print Page</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</body>
+
+	<script>
+		function printPage() {
+			window.print();
+		}
+	</script>
 </html>

@@ -49,6 +49,21 @@
 					<option value="{{.Id}}">{{.Name}}</option>
 					{{end}}
 				</select>
+				<label class="label" for="selectedManufacturerId">
+					Filter cars by manufacturer</label
+				>
+
+				<select
+					name="selectedManufacturerId"
+					class="select button"
+					id="selectedManufacturerId"
+				>
+					<option value="">select transmission</option>
+					<option value="">show all Transmission</option>
+					{{range.AvailableModels}}
+					<option value="{{.Id}}">{{.Specs.Transmission}}</option>
+					{{ end}}
+				</select>
 				<div class="menu-container">
 					<button id="filterButton" class="select button" type="submit">
 						Filter

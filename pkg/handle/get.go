@@ -163,6 +163,7 @@ func LoadFilter(w http.ResponseWriter, r *http.Request) {
 
 	availableManufacturers := api.GetManufacturer()
 	availableCategories := api.GetCategory()
+	//TODO add a map that keeps track of transmission counts.
 	data := struct {
 		AvailableModels        []models.CarModel
 		AvailableManufacturers []models.Manufacturer
