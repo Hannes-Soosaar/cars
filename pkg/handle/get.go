@@ -21,14 +21,24 @@ func LoadIndex(w http.ResponseWriter, r *http.Request) {
 	availableModels := api.GetModels()
 	availableManufacturers := api.GetManufacturer()
 	availableCategories := api.GetCategory()
+	availableTransmissionsMap := make(map[string]string)
+
+	for _, model := range availableModels {
+		if _, ok := availableTransmissionsMap[model.Specs.Transmission]; !ok {
+			availableTransmissionsMap[model.Specs.Transmission] = model.Specs.Transmission
+		}
+	}
+
 	data := struct {
 		AvailableModels        []models.CarModel
 		AvailableManufacturers []models.Manufacturer
 		AvailableCategories    []models.Category
+		AvailableTransmissions map[string]string
 	}{
 		AvailableModels:        availableModels,
 		AvailableManufacturers: availableManufacturers,
 		AvailableCategories:    availableCategories,
+		AvailableTransmissions: availableTransmissionsMap,
 	}
 	err = pageHtml.Execute(w, data)
 	if err != nil {

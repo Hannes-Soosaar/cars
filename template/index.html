@@ -49,10 +49,12 @@
 					<option value="{{.Id}}">{{.Name}}</option>
 					{{end}}
 				</select>
+			</form>
+
+			<form id="filterForm" action="/filterTransmission" method="POST">
 				<label class="label" for="selectedManufacturerId">
 					Filter cars by manufacturer</label
 				>
-
 				<select
 					name="selectedManufacturerId"
 					class="select button"
@@ -60,9 +62,9 @@
 				>
 					<option value="">select transmission</option>
 					<option value="">show all Transmission</option>
-					{{range.AvailableModels}}
-					<option value="{{.Id}}">{{.Specs.Transmission}}</option>
-					{{ end}}
+					{{ range $key, $value := .AvailableTransmissions }}
+					<option value="{{ $key }}">{{ $value }}</option>
+					{{ end }}
 				</select>
 				<div class="menu-container">
 					<button id="filterButton" class="select button" type="submit">
@@ -71,6 +73,7 @@
 				</div>
 			</form>
 		</ul>
+
 		<div>
 			<form id="compareFrom" action="/modelscompare" method="POST">
 				<div class="viewport">
