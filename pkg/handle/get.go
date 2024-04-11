@@ -82,7 +82,6 @@ func LoadCompareModels(w http.ResponseWriter, r *http.Request) {
 		}
 		selectedModelsId := r.Form["selectedModels"]
 		printToFile := r.Form["printToFile"]
-
 		allCars := api.GetModels()
 		for _, car := range allCars {
 			for i := 0; i < len(selectedModelsId); i++ {
@@ -94,7 +93,6 @@ func LoadCompareModels(w http.ResponseWriter, r *http.Request) {
 		if len(printToFile) > 0 {
 			printCompareToFile(cars)
 		}
-
 		data := struct {
 			CarModel []models.CarModel
 		}{
@@ -139,7 +137,6 @@ func LoadModel(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoadFilter(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Filter handler started")
 	pageHtml, err := template.ParseFiles("../../template/index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -165,9 +162,6 @@ func LoadFilter(w http.ResponseWriter, r *http.Request) {
 		carsCategory = api.FilterModelByCategory(categoryId)
 		carsTrans = api.FilterModelByTransmission(transmission)
 	}
-
-	fmt.Println(carsTrans)
-
 	allModels := api.GetModels()
 	if len(allModels) != len(carsManufacturer) {
 		for _, model := range carsManufacturer {
@@ -187,7 +181,6 @@ func LoadFilter(w http.ResponseWriter, r *http.Request) {
 		}
 		parameters++
 	}
-
 	if parameters != 0 {
 		for id, count := range occurrences {
 			if count == parameters {
@@ -202,18 +195,14 @@ func LoadFilter(w http.ResponseWriter, r *http.Request) {
 	} else {
 		cars = allModels
 	}
-
 	availableManufacturers := api.GetManufacturer()
-	availableCategories := api.GetCategory() // try to filter this so it returns only values that exist
-
+	availableCategories := api.GetCategory() 
 	availableTransmissionsMap := make(map[string]string)
-
 	for _, model := range allModels {
 		if _, ok := availableTransmissionsMap[model.Specs.Transmission]; !ok {
 			availableTransmissionsMap[model.Specs.Transmission] = model.Specs.Transmission
 		}
 	}
-
 	data := struct {
 		AvailableModels        []models.CarModel
 		AvailableManufacturers []models.Manufacturer
