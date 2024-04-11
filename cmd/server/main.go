@@ -17,7 +17,6 @@ func main() {
 	http.HandleFunc("/models", handle.LoadModels)
 	http.HandleFunc("/model", handle.LoadModel)
 	http.HandleFunc("/filter", handle.LoadFilter)
-	http.HandleFunc("/filterTransmission", handle.LoadTransmissionFilter)
 	fmt.Printf("Running on Port  :%s\n", conf.PORT)
 	err := http.ListenAndServe(conf.PORT, nil)
 	if err != nil {

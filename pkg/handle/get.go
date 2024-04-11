@@ -142,7 +142,12 @@ func LoadFilter(w http.ResponseWriter, r *http.Request) {
 		log.Println("Error getting template:", err)
 		return
 	}
+	var carsManufacturer []models.CarModel // gets models that match
+	var carsCategory []models.CarModel
+	var carsTrans []models.CarModel
 	var cars []models.CarModel
+	occurrences := make(map[int]int)
+	parameters := 0
 	if r.Method == http.MethodPost {
 		err := r.ParseForm()
 		if err != nil {
@@ -151,60 +156,60 @@ func LoadFilter(w http.ResponseWriter, r *http.Request) {
 		}
 		manufactureId := r.FormValue("selectedManufacturerId")
 		categoryId := r.FormValue("selectedCategoryId")
-		cars = api.FilterModelBy(manufactureId, categoryId)
-	}
-	availableManufacturers := api.GetManufacturer()
-	availableCategories := api.GetCategory()
-	allModels := api.GetModels()
-	availableTransmissionsMap := make(map[string]string)
-	for _, model := range allModels {
-		if _, ok := availableTransmissionsMap[model.Specs.Transmission]; !ok {
-			availableTransmissionsMap[model.Specs.Transmission] = model.Specs.Transmission
-		}
-	}
-	data := struct {
-		AvailableModels        []models.CarModel
-		AvailableManufacturers []models.Manufacturer
-		AvailableCategories    []models.Category
-		AvailableTransmissions map[string]string
-	}{
-		AvailableModels:        cars,
-		AvailableManufacturers: availableManufacturers,
-		AvailableCategories:    availableCategories,
-		AvailableTransmissions: availableTransmissionsMap,
-	}
-	err = pageHtml.Execute(w, data)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-}
-
-func LoadTransmissionFilter(w http.ResponseWriter, r *http.Request) {
-	pageHtml, err := template.ParseFiles("../../template/index.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		log.Println("Error getting template:", err)
-		return
-	}
-	var cars []models.CarModel
-	if r.Method == http.MethodPost {
-		err := r.ParseForm()
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
 		transmission := r.FormValue("selectedTransmissionValue")
-		cars = api.FilterModelByTransmission(transmission)
+		carsManufacturer = api.FilterModelByManufacturer(manufactureId)
+		carsCategory = api.FilterModelByCategory(categoryId)
+		carsTrans = api.FilterModelByTransmission(transmission)
 	}
-	availableManufacturers := api.GetManufacturer()
-	availableCategories := api.GetCategory()
+
+	fmt.Println(carsTrans)
+
 	allModels := api.GetModels()
+	if len(allModels) != len(carsManufacturer) {
+		for _, model := range carsManufacturer {
+			occurrences[model.Id]++
+		}
+		parameters++
+	}
+	if len(allModels) != len(carsCategory) {
+		for _, model := range carsCategory {
+			occurrences[model.Id]++
+		}
+		parameters++
+	}
+	if len(allModels) != len(carsTrans) {
+		for _, model := range carsTrans {
+			occurrences[model.Id]++
+		}
+		parameters++
+	}
+
+	if parameters != 0 {
+		for id, count := range occurrences {
+			if count == parameters {
+				for _, model := range allModels {
+					if model.Id == id {
+						cars = append(cars, model)
+						break
+					}
+				}
+			}
+		}
+	} else {
+		cars = allModels
+	}
+
+	availableManufacturers := api.GetManufacturer()
+	availableCategories := api.GetCategory() // try to filter this so it returns only values that exist
+
 	availableTransmissionsMap := make(map[string]string)
+
 	for _, model := range allModels {
 		if _, ok := availableTransmissionsMap[model.Specs.Transmission]; !ok {
 			availableTransmissionsMap[model.Specs.Transmission] = model.Specs.Transmission
 		}
 	}
+
 	data := struct {
 		AvailableModels        []models.CarModel
 		AvailableManufacturers []models.Manufacturer

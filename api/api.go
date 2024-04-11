@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -36,32 +35,30 @@ func GetModelBy(Id string) models.CarModel {
 	return car
 }
 
-func FilterModelBy(manufactureId string, categoryId string) (cars []models.CarModel) {
+func FilterModelByCategory(categoryId string) (cars []models.CarModel) {
 	allCars := GetModels()
-	var findByManufacture bool
-	var findByCategory bool
-	if len(manufactureId) > 0 {
-		findByManufacture = true
-	}
 	if len(categoryId) > 0 {
-		findByCategory = true
-	}
-	if !findByManufacture && !findByCategory {
+		for _, car := range allCars {
+			if strconv.Itoa(car.CategoryId) == categoryId {
+				cars = append(cars, car)
+			}
+		}
+	} else {
 		return allCars
 	}
-	for _, car := range allCars {
-		categoryMatch := false
-		manufacturerMatch := false
-		fmt.Println(car.Name)
-		if strconv.Itoa(car.CategoryId) == categoryId && findByCategory {
-			categoryMatch = true
+	return cars
+}
+
+func FilterModelByManufacturer(manufactureId string) (cars []models.CarModel) {
+	allCars := GetModels()
+	if len(manufactureId) > 0 {
+		for _, car := range allCars {
+			if strconv.Itoa(car.ManufacturerID) == manufactureId {
+				cars = append(cars, car)
+			}
 		}
-		if strconv.Itoa(car.ManufacturerID) == manufactureId && findByManufacture {
-			manufacturerMatch = true
-		}
-		if categoryMatch || manufacturerMatch {
-			cars = append(cars, car)
-		}
+	} else {
+		return allCars
 	}
 	return cars
 }

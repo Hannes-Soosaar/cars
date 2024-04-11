@@ -28,11 +28,6 @@
 					<option value="{{.Id}}">{{.Name}}</option>
 					{{end}}
 				</select>
-				<div class="menu-container">
-					<button id="filterButton" class="select button" type="submit">
-						Filter
-					</button>
-				</div>
 				<hr />
 				<label class="label-style" for="selectedCategoryId"
 					>Filter cars by category</label
@@ -48,18 +43,7 @@
 					<option value="{{.Id}}">{{.Name}}</option>
 					{{end}}
 				</select>
-				<div class="menu-container">
-					<button id="filterButton" class="select button" type="submit">
-						Filter
-					</button>
-				</div>
-			</form>
-			<hr />
-			<form
-				id="filterTransmissionForm"
-				action="/filterTransmission"
-				method="POST"
-			>
+				<hr />
 				<label class="label" for="selectedTransmissionValue">
 					Filter cars by transmission</label
 				>
@@ -76,7 +60,7 @@
 				</select>
 				<div class="menu-container">
 					<button
-						id="filterTransmissionButton"
+						id="filterButton"
 						class="select button"
 						type="submit"
 					>
