@@ -13,7 +13,6 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.HandleFunc("/", handle.LoadIndex)
 	http.HandleFunc("/modelscompare", handle.LoadCompareModels)
-	http.HandleFunc("/manufacturer", handle.LoadManufacturer)
 	http.HandleFunc("/models", handle.LoadModels)
 	http.HandleFunc("/model", handle.LoadModel)
 	http.HandleFunc("/filter", handle.LoadFilter)

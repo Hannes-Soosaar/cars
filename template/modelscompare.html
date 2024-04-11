@@ -37,8 +37,20 @@
 			{{end}}
 		</div>
 		<div class="sub-menu-container-model">
-			<form id="home" action="/" method="POST" enctype="multipart/form-data">
-				<button type="submit">Back</button>
+			<form id="home" action="/" method="POST">
+				<button class="margin10" type="submit">Back</button>
+			</form>
+			<form id="compareFrom" action="/modelscompare" method="POST">
+				{{range.CarModel}}
+				<input
+					type="hidden"
+					name="selectedModels"
+					id="selectedModels"
+					value="{{.Id}}"
+				/>
+				{{end}}
+				<input type="hidden" name="printToFile" id="printToFile" value="1" />
+				<button class="margin10" type="submit">Save to file</button>
 			</form>
 		</div>
 	</body>

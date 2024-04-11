@@ -80,17 +80,21 @@ func LoadCompareModels(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		fmt.Println("Form submitted via POST method")
 		selectedModelsId := r.Form["selectedModels"]
+		printToFile := r.Form["printToFile"]
+
 		allCars := api.GetModels()
 		for _, car := range allCars {
 			for i := 0; i < len(selectedModelsId); i++ {
 				if strconv.Itoa(car.Id) == selectedModelsId[i] {
 					cars = append(cars, car)
-					fmt.Println("Adding Car")
 				}
 			}
 		}
+		if len(printToFile) > 0 {
+			printCompareToFile(cars)
+		}
+
 		data := struct {
 			CarModel []models.CarModel
 		}{
